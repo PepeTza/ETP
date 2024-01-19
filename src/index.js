@@ -6,6 +6,8 @@ const WebSocket = require('ws');
 const fun = require("./js/funciones");
 
 let players = [];
+let anfitrion;
+let destino;
 
 app.set('puerto', 1234);
 
@@ -41,14 +43,18 @@ app.get('/anfitrion', (req,res) => {
 wss.on('connection', (ws) => {
 
     console.log('Conexion nueva');
-    ws.send('Hola mi pana');
 
     ws.on('message', (data) => {
 
-        if (data.length>1){
-
-            if (players[0]==null){
-
+        if (data.indexOf(" ")==-1){
+            
+            console.log(1);
+            if(data=="anfitrion"){
+                console.log(2);
+                anfitrion = ws;
+            }
+            else if (players[0]==null){
+                console.log(3);
                 let player = {
     
                     username : data,
@@ -57,22 +63,30 @@ wss.on('connection', (ws) => {
                 players.push(player);
             }
             else if (!fun.existe(players,String(data))){
-    
+                console.log(4);
                 let player = {
     
                     username : String(data),
                     dir : ws
                 }
-        
                 players.push(player);
-                console.log('entre aqui');
             }
             else{
-
-                ws.send('1');
+                console.log(5);
+                ws.send("1");
             }   
         }
+        else if(data.indexOf(" ",2)==-1){
 
+            console.log(6);
+            anfitrion.send(data+"");
+        }
+        else if(data.indexOf(" ",2)!=-1){
+
+            console.log("player="+fun.buscar(players, fun.name(data)));
+            destino = players[fun.buscar(players, fun.name(data))].dir;
+            destino.send(data+"");
+        }
     })
 })
 
@@ -80,5 +94,5 @@ app.listen(3000);
 
 server.listen(app.get('puerto'), () => {
 
-    console.log('Servidor iniciado en el puerto: '+ app.get('puerto'));
+    console.log('Servidor WebSocket iniciado en el puerto: '+ app.get('puerto'));
 })

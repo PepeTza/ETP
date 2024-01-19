@@ -3,156 +3,186 @@
 <script>
 
     ws = new WebSocket("ws://localhost:1234");
+
+    let user;
+    let botones = [];
+    let botonesUsados = [];
     
     ws.addEventListener('open', (data) => {
 
+        botones = [botonQ, botonW, botonE, botonR, botonT, botonY, botonU, botonI,
+                botonO, botonP, botonA, botonS, botonD, botonF, botonG, botonH, botonJ, 
+                botonK, botonL, botonÑ, botonZ, botonX, botonC, botonV, botonB, botonN, 
+                botonM];
+
         submit.onclick = () => {
 
-            ws.send(username.value);
-            submit.disabled = true;
-            botonQ.disabled = false;
-            botonW.disabled = false;
-            botonE.disabled = false;
-            botonR.disabled = false;
-            botonT.disabled = false;
-            botonY.disabled = false;
-            botonU.disabled = false;
-            botonI.disabled = false;
-            botonO.disabled = false;
-            botonP.disabled = false;
-            botonA.disabled = false;
-            botonS.disabled = false;
-            botonD.disabled = false;
-            botonF.disabled = false;
-            botonG.disabled = false;
-            botonH.disabled = false;
-            botonJ.disabled = false;
-            botonK.disabled = false;
-            botonL.disabled = false;
-            botonÑ.disabled = false;
-            botonZ.disabled = false;
-            botonX.disabled = false;
-            botonC.disabled = false;
-            botonV.disabled = false;
-            botonB.disabled = false;
-            botonN.disabled = false;
-            botonM.disabled = false;
+            if (username.value.indexOf(" ")==-1){
+
+                user = username.value;
+                ws.send(user);
+                submit.disabled = true;
+                username.disabled = true; 
+                for (i=0; i<botones.length; i++) botones[i].disabled = false;
+            }
+            else{
+
+                window.alert('El nombre de usuario no puede contener espacios');
+            }
         }
 
         botonQ.onclick = () => {
 
-            ws.send(botonQ.value);
+            ws.send(botonQ.value + ` ${user}`);
+            botonesUsados.push(botonQ);
         }
         botonW.onclick = () => {
 
-            ws.send(botonW.value);
+            ws.send(botonW.value + ` ${user}`);
+            botonesUsados.push(botonW);
         }
         botonE.onclick = () => {
 
-            ws.send(botonE.value);
+            ws.send(botonE.value + ` ${user}`);
+            botonesUsados.push(botonE);
         }
         botonR.onclick = () => {
 
-            ws.send(botonR.value);
+            ws.send(botonR.value + ` ${user}`);
+            botonesUsados.push(botonR);
         }
         botonT.onclick = () => {
 
-            ws.send(botonT.value);
+            ws.send(botonT.value + ` ${user}`);
+            botonesUsados.push(botonT);
         }
         botonY.onclick = () => {
 
-            ws.send(botonY.value);
+            ws.send(botonY.value + ` ${user}`);
+            botonesUsados.push(botonY);
         }
         botonU.onclick = () => {
 
-            ws.send(botonU.value);
+            ws.send(botonU.value + ` ${user}`);
+            botonesUsados.push(botonU);
         }
         botonI.onclick = () => {
 
-            ws.send(botonI.value);
+            ws.send(botonI.value + ` ${user}`);
+            botonesUsados.push(botonI);
         }
         botonO.onclick = () => {
 
-            ws.send(botonO.value);
+            ws.send(botonO.value + ` ${user}`);
+            botonesUsados.push(botonO);
         }
         botonP.onclick = () => {
 
-            ws.send(botonP.value);
+            ws.send(botonP.value + ` ${user}`);
+            botonesUsados.push(botonP);
         }
         botonA.onclick = () => {
 
-            ws.send(botonA.value);
+            ws.send(botonA.value + ` ${user}`);
+            botonesUsados.push(botonA);
         }
         botonS.onclick = () => {
 
-            ws.send(botonS.value);
+            ws.send(botonS.value + ` ${user}`);
+            botonesUsados.push(botonS);
         }
         botonD.onclick = () => {
 
-            ws.send(botonD.value);
+            ws.send(botonD.value + ` ${user}`);
+            botonesUsados.push(botonD);
         }
         botonF.onclick = () => {
 
-            ws.send(botonF.value);
+            ws.send(botonF.value + ` ${user}`);
+            botonesUsados.push(botonF);
         }
         botonG.onclick = () => {
 
-            ws.send(botonG.value);
+            ws.send(botonG.value + ` ${user}`);
+            botonesUsados.push(botonG);
         }
         botonH.onclick = () => {
 
-            ws.send(botonH.value);
+            ws.send(botonH.value + ` ${user}`);
+            botonesUsados.push(botonH);
         }
         botonJ.onclick = () => {
 
-            ws.send(botonJ.value);
+            ws.send(botonJ.value + ` ${user}`);
+            botonesUsados.push(botonJ);
         }
         botonK.onclick = () => {
 
-            ws.send(botonK.value);
+            ws.send(botonK.value + ` ${user}`);
+            botonesUsados.push(botonK);
         }
         botonL.onclick = () => {
 
-            ws.send(botonL.value);
+            ws.send(botonL.value + ` ${user}`);
+            botonesUsados.push(botonL);
         }
         botonÑ.onclick = () => {
 
-            ws.send(botonÑ.value);
+            ws.send(botonÑ.value + ` ${user}`);
+            botonesUsados.push(botonÑ);
         }
         botonZ.onclick = () => {
 
-            ws.send(botonZ.value);
+            ws.send(botonZ.value + ` ${user}`);
+            botonesUsados.push(botonZ);
         }
         botonX.onclick = () => {
 
-            ws.send(botonX.value);
+            ws.send(botonX.value + ` ${user}`);
+            botonesUsados.push(botonX);
         }
         botonC.onclick = () => {
 
-            ws.send(botonC.value);
+            ws.send(botonC.value + ` ${user}`);
+            botonesUsados.push(botonC);
         }
         botonV.onclick = () => {
 
-            ws.send(botonV.value);
+            ws.send(botonV.value + ` ${user}`);
+            botonesUsados.push(botonV);
         }
         botonB.onclick = () => {
 
-            ws.send(botonB.value);
+            ws.send(botonB.value + ` ${user}`);
+            botonesUsados.push(botonB);
         }
         botonN.onclick = () => {
 
-            ws.send(botonN.value);
+            ws.send(botonN.value + ` ${user}`);
+            botonesUsados.push(botonN);
         }
         botonM.onclick = () => {
 
-            ws.send(botonM.value);
+            ws.send(botonM.value + ` ${user}`);
+            botonesUsados.push(botonM);
         }
 
         ws.addEventListener('message', (data) => {
 
-            if(String(data)=='1'){
+            if(data.data=='1'){
 
-                window.alert(`El nombre de usuario ${username.value} ya esta en uso`);
+                window.alert(`El nombre de usuario ${user} ya esta en uso`);
+                username.disabled = false;
+                submit.disabled = false;
+                for (i=0; i<botones.length; i++) botones[i].disabled = true;
+            }
+            else if(data.data[data.data.length-1]=="s"){
+
+                console.log("Es correcto");
+            }
+            else if(data.data[data.data.length-1]=="n"){
+
+                console.log("Es incorrecto");
             }
         })
     })

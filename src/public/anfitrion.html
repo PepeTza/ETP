@@ -1,7 +1,42 @@
 <!DOCTYPE html>
+<script>
+
+    ws = new WebSocket("ws://localhost:1234");
+    let aux = "";
+
+    ws.addEventListener('open', () => {
+
+        ws.send("anfitrion");
+
+        botonS.onclick = () => {
+
+            ws.send(aux+" s");
+            entrada.value = "";
+            botonS.disabled = true;
+            botonN.disabled = true;
+        }
+
+        botonN.onclick = () => {
+
+            ws.send(aux+" n");
+            entrada.value = "";
+            botonS.disabled = true;
+            botonN.disabled = true;
+        }
+    });
+
+    ws.addEventListener('message', (data) => {
+
+        entrada.value = data.data[0];
+        aux = data.data;
+        botonS.disabled = false;
+        botonN.disabled = false;
+    });
+        
+</script>
 
 <html>
-    <textarea id="entrada" cols="10" rows="1"></textarea>
-    <button id="botonS" value="s">Si</button>
-    <button id="botonN" value="n">No</button>
+    <textarea id="entrada" cols="10" rows="1" disabled = true ></textarea>
+    <button id="botonS" value="s" disabled = true >Si</button>
+    <button id="botonN" value="n" disabled = true >No</button>
 </html>
