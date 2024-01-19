@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<script>
+
+    ws = new WebSocket("ws://localhost:1234");
+    
+    ws.addEventListener('open', (data) => {
+
+        submit.onclick = () => {
+
+            ws.send(username.value);
+            submit.disabled = true;
+            botonQ.disabled = false;
+            botonW.disabled = false;
+            botonE.disabled = false;
+            botonR.disabled = false;
+            botonT.disabled = false;
+            botonY.disabled = false;
+            botonU.disabled = false;
+            botonI.disabled = false;
+            botonO.disabled = false;
+            botonP.disabled = false;
+            botonA.disabled = false;
+            botonS.disabled = false;
+            botonD.disabled = false;
+            botonF.disabled = false;
+            botonG.disabled = false;
+            botonH.disabled = false;
+            botonJ.disabled = false;
+            botonK.disabled = false;
+            botonL.disabled = false;
+            botonÑ.disabled = false;
+            botonZ.disabled = false;
+            botonX.disabled = false;
+            botonC.disabled = false;
+            botonV.disabled = false;
+            botonB.disabled = false;
+            botonN.disabled = false;
+            botonM.disabled = false;
+        }
+
+        botonQ.onclick = () => {
+
+            ws.send(botonQ.value);
+        }
+        botonW.onclick = () => {
+
+            ws.send(botonW.value);
+        }
+        botonE.onclick = () => {
+
+            ws.send(botonE.value);
+        }
+        botonR.onclick = () => {
+
+            ws.send(botonR.value);
+        }
+        botonT.onclick = () => {
+
+            ws.send(botonT.value);
+        }
+        botonY.onclick = () => {
+
+            ws.send(botonY.value);
+        }
+        botonU.onclick = () => {
+
+            ws.send(botonU.value);
+        }
+        botonI.onclick = () => {
+
+            ws.send(botonI.value);
+        }
+        botonO.onclick = () => {
+
+            ws.send(botonO.value);
+        }
+        botonP.onclick = () => {
+
+            ws.send(botonP.value);
+        }
+        botonA.onclick = () => {
+
+            ws.send(botonA.value);
+        }
+        botonS.onclick = () => {
+
+            ws.send(botonS.value);
+        }
+        botonD.onclick = () => {
+
+            ws.send(botonD.value);
+        }
+        botonF.onclick = () => {
+
+            ws.send(botonF.value);
+        }
+        botonG.onclick = () => {
+
+            ws.send(botonG.value);
+        }
+        botonH.onclick = () => {
+
+            ws.send(botonH.value);
+        }
+        botonJ.onclick = () => {
+
+            ws.send(botonJ.value);
+        }
+        botonK.onclick = () => {
+
+            ws.send(botonK.value);
+        }
+        botonL.onclick = () => {
+
+            ws.send(botonL.value);
+        }
+        botonÑ.onclick = () => {
+
+            ws.send(botonÑ.value);
+        }
+        botonZ.onclick = () => {
+
+            ws.send(botonZ.value);
+        }
+        botonX.onclick = () => {
+
+            ws.send(botonX.value);
+        }
+        botonC.onclick = () => {
+
+            ws.send(botonC.value);
+        }
+        botonV.onclick = () => {
+
+            ws.send(botonV.value);
+        }
+        botonB.onclick = () => {
+
+            ws.send(botonB.value);
+        }
+        botonN.onclick = () => {
+
+            ws.send(botonN.value);
+        }
+        botonM.onclick = () => {
+
+            ws.send(botonM.value);
+        }
+
+        ws.addEventListener('message', (data) => {
+
+            if(String(data)=='1'){
+
+                window.alert(`El nombre de usuario ${username.value} ya esta en uso`);
+            }
+        })
+    })
+
+</script>
+
+<html>
+    <head>
+        <title>El ahorcado</title>
+    </head>
+    <body class="container">
+        <div class="row mt-4">
+            <div class="col-sm-6">
+                <div>Aqui va el nombre de usuario</div><br>
+                <textarea id="username" cols="15" rows="1"></textarea>
+                <button id = "submit">Submit</button>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-6">
+                <div>Aqui va el dibujo</div>
+                <textarea id="pantalla" cols="10" rows="15"></textarea>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-6">
+                <div>Aqui van las letras</div>
+                <button id = "botonQ" value = "q" disabled = true >q</button>
+                <button id = "botonW" value = "w" disabled = true >w</button>
+                <button id = "botonE" value = "e" disabled = true >e</button>
+                <button id = "botonR" value = "r" disabled = true >r</button>
+                <button id = "botonT" value = "t" disabled = true >t</button>
+                <button id = "botonY" value = "y" disabled = true >y</button>
+                <button id = "botonU" value = "u" disabled = true >u</button>
+                <button id = "botonI" value = "i" disabled = true >i</button>
+                <button id = "botonO" value = "o" disabled = true >o</button>
+                <button id = "botonP" value = "p" disabled = true >p</button><br>
+                <button id = "botonA" value = "a" disabled = true >a</button>
+                <button id = "botonS" value = "s" disabled = true >s</button>
+                <button id = "botonD" value = "d" disabled = true >d</button>
+                <button id = "botonF" value = "f" disabled = true >f</button>
+                <button id = "botonG" value = "g" disabled = true >g</button>
+                <button id = "botonH" value = "h" disabled = true >h</button>
+                <button id = "botonJ" value = "j" disabled = true >j</button>
+                <button id = "botonK" value = "k" disabled = true >k</button>
+                <button id = "botonL" value = "l" disabled = true >l</button>
+                <button id = "botonÑ" value = "ñ" disabled = true >ñ</button><br>
+                <button id = "botonZ" value = "z" disabled = true >z</button>
+                <button id = "botonX" value = "x" disabled = true >x</button>
+                <button id = "botonC" value = "c" disabled = true >c</button>
+                <button id = "botonV" value = "v" disabled = true >v</button>
+                <button id = "botonB" value = "b" disabled = true >b</button>
+                <button id = "botonN" value = "n" disabled = true >n</button>
+                <button id = "botonM" value = "m" disabled = true >m</button>
+            </div>
+        </div>
+    </body>
+</html>
+
+<style>
+
+    button [id = botonQ],[id = botonW],[id = botonE],[id = botonR],[id = botonT],[id = botonY],[id = botonU],[id = botonI],[id = botonO],[id = botonP],
+    [id = botonA],[id = botonS],[id = botonD],[id = botonF],[id = botonG],[id = botonH],[id = botonJ],[id = botonK],[id = botonL],[id = botonÑ],
+    [id = botonZ],[id = botonX],[id = botonC],[id = botonV],[id = botonB],[id = botonN],[id = botonM],[id = botonQ] {
+
+        width: 30px;
+        height: 30px;
+    }
+
+    button [id = submit] {
+
+        width: 50px;
+        height: 65px;
+    }
+
+</style>

@@ -3,6 +3,9 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app); 
 const WebSocket = require('ws');
+const fun = require("./js/funciones");
+
+let players = [];
 
 app.set('puerto', 1234);
 
@@ -19,6 +22,22 @@ app.get('/', (req,res) => {
     })
 })
 
+app.get('/jugador', (req,res) => {
+
+    res.sendFile('./public/jugador.html', {
+
+        root: __dirname
+    })
+})
+
+app.get('/anfitrion', (req,res) => {
+
+    res.sendFile('./public/anfitrion.html', {
+
+        root: __dirname
+    })
+})
+
 wss.on('connection', (ws) => {
 
     console.log('Conexion nueva');
@@ -26,7 +45,34 @@ wss.on('connection', (ws) => {
 
     ws.on('message', (data) => {
 
-        console.log(`Mensaje recibido: `+ data);
+        if (data.length>1){
+
+            if (players[0]==null){
+
+                let player = {
+    
+                    username : data,
+                    dir : ws
+                }
+                players.push(player);
+            }
+            else if (!fun.existe(players,String(data))){
+    
+                let player = {
+    
+                    username : String(data),
+                    dir : ws
+                }
+        
+                players.push(player);
+                console.log('entre aqui');
+            }
+            else{
+
+                ws.send('1');
+            }   
+        }
+
     })
 })
 
@@ -36,5 +82,3 @@ server.listen(app.get('puerto'), () => {
 
     console.log('Servidor iniciado en el puerto: '+ app.get('puerto'));
 })
-
-console.log()
