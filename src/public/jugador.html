@@ -15,10 +15,11 @@
     ws.addEventListener('open', (data) => {
 
         botones = [q, w, e, r, t, y, u, i, o, p,     
-              a, s, d, f, g, h, j, k, l, ñ, 
-              z, x, c, v, b, n, m];
+                a, s, d, f, g, h, j, k, l, ñ, 
+                z, x, c, v, b, n, m];
 
         submit.onclick = () => {
+
             if(username.value.length<2){
 
                 window.alert("El nombre de usuario debe contener por lo menos dos caracteres");
@@ -29,15 +30,7 @@
                 ws.send(user);
                 submit.disabled = true;
                 username.disabled = true; 
-        
-                if(inicio){
-
-                    for (i=0; i<botones.length; i++) botones[i].disabled = false;
-                }
-                else{
-
-                    window.alert("Espera que inicie la partida");
-                }
+                window.alert("Espera que inicie la partida");
             }
             else if(username.disabled){
 
@@ -215,15 +208,24 @@
                 window.alert(`El nombre de usuario ${user} ya esta en uso`);
                 username.disabled = false;
                 submit.disabled = false;
-                for (i=0; i<botones.length; i++) botones[i].disabled = true;
+                for (i=0; i<botones.length; i++) botones[i].disabled = true;     
             }
             else if ((data.data+"")[0]=="2"){
 
                 palabra = data.data.slice(2);
-                inicio = true;
                 palabraO = palabra.split('').map(letter => (general.indexOf(letter) >= 0 ? letter : " _ ")).join('');
                 palabraR.innerHTML = "Adivina la palabra: "+palabraO;
+                window.alert("La partida acaba de empezar");
+            }
+            else if ((data.data+"")[0]=="3"){
+
+                window.alert("Es tu turno");
                 for (i=0; i<botones.length; i++) botones[i].disabled = false;
+                if(botonesUsados[0]!==null) for (i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
+            }
+            else if ((data.data+"")[0]=="4"){
+
+                window.alert(`Es el turno de ${data.data.slice(2)}`);
             }
             else if(data.data[data.data.length-1]=="s"){
 
@@ -242,8 +244,6 @@
                     }
                 }
                 palabraR.innerHTML = "Adivina la palabra: "+palabraO;
-                for (i=0; i<botones.length; i++) botones[i].disabled = false;
-                for (i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
                 if (palabraO.indexOf("_")==-1){
 
                     window.alert("Felicidades, ganaste la partida");
@@ -252,8 +252,6 @@
             }
             else if(data.data[data.data.length-1]=="n"){
 
-                for (i=0; i<botones.length; i++) botones[i].disabled = false;
-                for (i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
             }
         })
     })

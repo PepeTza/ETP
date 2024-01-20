@@ -8,6 +8,7 @@ const fun = require("./js/funciones");
 let players = [];
 let anfitrion;
 let destino;
+let turno = 0;
 
 app.set('puerto', 1234);
 
@@ -98,17 +99,30 @@ wss.on('connection', (ws) => {
 
                 players[i].dir.send("2 "+data.slice(2));
             }
+            players[turno].dir.send("3");
+            for(i=0; i<players.length; i++){
+
+                if (i!=turno) players[i].dir.send("4 "+players[turno].username);
+            }
         }
         else if(data.indexOf(" ",2)==-1){
 
             console.log("6");
             anfitrion.send(data+"");
+            if(turno!=players.length-1) turno++;
+            else turno = 0;
+            console.log("turno: "+turno);
         }
         else if(data.indexOf(" ",2)!=-1){
 
             console.log("player="+fun.buscar(players, fun.name(data)));
             destino = players[fun.buscar(players, fun.name(data))].dir;
             destino.send(data+"");
+            players[turno].dir.send("3");
+            for(i=0; i<players.length; i++){
+
+                if (i!=turno) players[i].dir.send("4 "+players[turno].username);
+            }
         }
     })
 })
