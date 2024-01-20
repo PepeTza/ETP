@@ -7,164 +7,205 @@
     let user;
     let botones = [];
     let botonesUsados = [];
+    let palabra;
+    let palabraO;
+    let inicio = false;
+    let general = [];
     
     ws.addEventListener('open', (data) => {
 
-        botones = [botonQ, botonW, botonE, botonR, botonT, botonY, botonU, botonI,
-                botonO, botonP, botonA, botonS, botonD, botonF, botonG, botonH, botonJ, 
-                botonK, botonL, botonÑ, botonZ, botonX, botonC, botonV, botonB, botonN, 
-                botonM];
+        botones = [q, w, e, r, t, y, u, i, o, p,     
+              a, s, d, f, g, h, j, k, l, ñ, 
+              z, x, c, v, b, n, m];
 
         submit.onclick = () => {
+            if(username.value.length<2){
 
-            if (username.value.indexOf(" ")==-1){
+                window.alert("El nombre de usuario debe contener por lo menos dos caracteres");
+            }
+            else if (username.value.indexOf(" ")==-1){
 
                 user = username.value;
                 ws.send(user);
                 submit.disabled = true;
                 username.disabled = true; 
-                for (i=0; i<botones.length; i++) botones[i].disabled = false;
+        
+                if(inicio){
+
+                    for (i=0; i<botones.length; i++) botones[i].disabled = false;
+                }
+                else{
+
+                    window.alert("Espera que inicie la partida");
+                }
             }
-            else{
+            else if(username.disabled){
 
                 window.alert('El nombre de usuario no puede contener espacios');
             }
         }
 
-        botonQ.onclick = () => {
+        q.onclick = () => {
 
-            ws.send(botonQ.value + ` ${user}`);
-            botonesUsados.push(botonQ);
+            ws.send(q.value + ` ${user}`);
+            botonesUsados.push(q);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonW.onclick = () => {
+        w.onclick = () => {
 
-            ws.send(botonW.value + ` ${user}`);
-            botonesUsados.push(botonW);
+            ws.send(w.value + ` ${user}`);
+            botonesUsados.push(w);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonE.onclick = () => {
+        e.onclick = () => {
 
-            ws.send(botonE.value + ` ${user}`);
-            botonesUsados.push(botonE);
+            ws.send(e.value + ` ${user}`);
+            botonesUsados.push(e);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonR.onclick = () => {
+        r.onclick = () => {
 
-            ws.send(botonR.value + ` ${user}`);
-            botonesUsados.push(botonR);
+            ws.send(r.value + ` ${user}`);
+            botonesUsados.push(r);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonT.onclick = () => {
+        t.onclick = () => {
 
-            ws.send(botonT.value + ` ${user}`);
-            botonesUsados.push(botonT);
+            ws.send(t.value + ` ${user}`);
+            botonesUsados.push(t);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonY.onclick = () => {
+        y.onclick = () => {
 
-            ws.send(botonY.value + ` ${user}`);
-            botonesUsados.push(botonY);
+            ws.send(t.value + ` ${user}`);
+            botonesUsados.push(y);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonU.onclick = () => {
+        u.onclick = () => {
 
-            ws.send(botonU.value + ` ${user}`);
-            botonesUsados.push(botonU);
+            ws.send(u.value + ` ${user}`);
+            botonesUsados.push(u);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonI.onclick = () => {
+        i.onclick = () => {
 
-            ws.send(botonI.value + ` ${user}`);
-            botonesUsados.push(botonI);
+            ws.send(i.value + ` ${user}`);
+            botonesUsados.push(i);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonO.onclick = () => {
+        o.onclick = () => {
 
-            ws.send(botonO.value + ` ${user}`);
-            botonesUsados.push(botonO);
+            ws.send(o.value + ` ${user}`);
+            botonesUsados.push(o);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonP.onclick = () => {
+        p.onclick = () => {
 
-            ws.send(botonP.value + ` ${user}`);
-            botonesUsados.push(botonP);
+            ws.send(p.value + ` ${user}`);
+            botonesUsados.push(p);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonA.onclick = () => {
+        a.onclick = () => {
 
-            ws.send(botonA.value + ` ${user}`);
-            botonesUsados.push(botonA);
+            ws.send(a.value + ` ${user}`);
+            botonesUsados.push(a);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonS.onclick = () => {
+        s.onclick = () => {
 
-            ws.send(botonS.value + ` ${user}`);
-            botonesUsados.push(botonS);
+            ws.send(s.value + ` ${user}`);
+            botonesUsados.push(s);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonD.onclick = () => {
+        d.onclick = () => {
 
-            ws.send(botonD.value + ` ${user}`);
-            botonesUsados.push(botonD);
+            ws.send(d.value + ` ${user}`);
+            botonesUsados.push(d);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonF.onclick = () => {
+        f.onclick = () => {
 
-            ws.send(botonF.value + ` ${user}`);
-            botonesUsados.push(botonF);
+            ws.send(f.value + ` ${user}`);
+            botonesUsados.push(f);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonG.onclick = () => {
+        g.onclick = () => {
 
-            ws.send(botonG.value + ` ${user}`);
-            botonesUsados.push(botonG);
+            ws.send(g.value + ` ${user}`);
+            botonesUsados.push(g);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonH.onclick = () => {
+        h.onclick = () => {
 
-            ws.send(botonH.value + ` ${user}`);
-            botonesUsados.push(botonH);
+            ws.send(h.value + ` ${user}`);
+            botonesUsados.push(h);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonJ.onclick = () => {
+        j.onclick = () => {
 
-            ws.send(botonJ.value + ` ${user}`);
-            botonesUsados.push(botonJ);
+            ws.send(j.value + ` ${user}`);
+            botonesUsados.push(j);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonK.onclick = () => {
+        k.onclick = () => {
 
-            ws.send(botonK.value + ` ${user}`);
-            botonesUsados.push(botonK);
+            ws.send(k.value + ` ${user}`);
+            botonesUsados.push(k);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonL.onclick = () => {
+        l.onclick = () => {
 
-            ws.send(botonL.value + ` ${user}`);
-            botonesUsados.push(botonL);
+            ws.send(l.value + ` ${user}`);
+            botonesUsados.push(l);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonÑ.onclick = () => {
+        ñ.onclick = () => {
 
-            ws.send(botonÑ.value + ` ${user}`);
-            botonesUsados.push(botonÑ);
+            ws.send(ñ.value + ` ${user}`);
+            botonesUsados.push(ñ);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonZ.onclick = () => {
+        z.onclick = () => {
 
-            ws.send(botonZ.value + ` ${user}`);
-            botonesUsados.push(botonZ);
+            ws.send(z.value + ` ${user}`);
+            botonesUsados.push(z);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonX.onclick = () => {
+        x.onclick = () => {
 
-            ws.send(botonX.value + ` ${user}`);
-            botonesUsados.push(botonX);
+            ws.send(x.value + ` ${user}`);
+            botonesUsados.push(x);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonC.onclick = () => {
+        c.onclick = () => {
 
-            ws.send(botonC.value + ` ${user}`);
-            botonesUsados.push(botonC);
+            ws.send(c.value + ` ${user}`);
+            botonesUsados.push(c);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonV.onclick = () => {
+        v.onclick = () => {
 
-            ws.send(botonV.value + ` ${user}`);
-            botonesUsados.push(botonV);
+            ws.send(v.value + ` ${user}`);
+            botonesUsados.push(v);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonB.onclick = () => {
+        b.onclick = () => {
 
-            ws.send(botonB.value + ` ${user}`);
-            botonesUsados.push(botonB);
+            ws.send(b.value + ` ${user}`);
+            botonesUsados.push(b);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonN.onclick = () => {
+        n.onclick = () => {
 
-            ws.send(botonN.value + ` ${user}`);
-            botonesUsados.push(botonN);
+            ws.send(n.value + ` ${user}`);
+            botonesUsados.push(n);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
-        botonM.onclick = () => {
+        m.onclick = () => {
 
-            ws.send(botonM.value + ` ${user}`);
-            botonesUsados.push(botonM);
+            ws.send(m.value + ` ${user}`);
+            botonesUsados.push(m);
+            for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
 
         ws.addEventListener('message', (data) => {
@@ -176,13 +217,43 @@
                 submit.disabled = false;
                 for (i=0; i<botones.length; i++) botones[i].disabled = true;
             }
+            else if ((data.data+"")[0]=="2"){
+
+                palabra = data.data.slice(2);
+                inicio = true;
+                palabraO = palabra.split('').map(letter => (general.indexOf(letter) >= 0 ? letter : " _ ")).join('');
+                palabraR.innerHTML = "Adivina la palabra: "+palabraO;
+                for (i=0; i<botones.length; i++) botones[i].disabled = false;
+            }
             else if(data.data[data.data.length-1]=="s"){
 
-                console.log("Es correcto");
+                for(i=0, j=1; i<palabra.length; i++, j=j+3){
+
+                    if((palabra+"")[i]==(data.data+"")[0]){
+
+                        if(j+1!=palabraO.length){
+                            
+                            palabraO = palabraO.slice(0,j)+(data.data+"")[0]+palabraO.slice(j+1);
+                        }
+                        else{
+
+                            palabraO = palabraO.slice(0,j)+(data.data+"")[0];
+                        }
+                    }
+                }
+                palabraR.innerHTML = "Adivina la palabra: "+palabraO;
+                for (i=0; i<botones.length; i++) botones[i].disabled = false;
+                for (i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
+                if (palabraO.indexOf("_")==-1){
+
+                    window.alert("Felicidades, ganaste la partida");
+                    for (i=0; i<botones.length; i++) botones[i].disabled = true;
+                }
             }
             else if(data.data[data.data.length-1]=="n"){
 
-                console.log("Es incorrecto");
+                for (i=0; i<botones.length; i++) botones[i].disabled = false;
+                for (i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
             }
         })
     })
@@ -197,7 +268,7 @@
         <div class="row mt-4">
             <div class="col-sm-6">
                 <div>Aqui va el nombre de usuario</div><br>
-                <textarea id="username" cols="15" rows="1"></textarea>
+                <textarea id="username" cols="15" rows="1"></textarea><br>
                 <button id = "submit">Submit</button>
             </div>
         </div>
@@ -209,34 +280,34 @@
         </div>
         <div class="row mt-4">
             <div class="col-sm-6">
-                <div>Aqui van las letras</div>
-                <button id = "botonQ" value = "q" disabled = true >q</button>
-                <button id = "botonW" value = "w" disabled = true >w</button>
-                <button id = "botonE" value = "e" disabled = true >e</button>
-                <button id = "botonR" value = "r" disabled = true >r</button>
-                <button id = "botonT" value = "t" disabled = true >t</button>
-                <button id = "botonY" value = "y" disabled = true >y</button>
-                <button id = "botonU" value = "u" disabled = true >u</button>
-                <button id = "botonI" value = "i" disabled = true >i</button>
-                <button id = "botonO" value = "o" disabled = true >o</button>
-                <button id = "botonP" value = "p" disabled = true >p</button><br>
-                <button id = "botonA" value = "a" disabled = true >a</button>
-                <button id = "botonS" value = "s" disabled = true >s</button>
-                <button id = "botonD" value = "d" disabled = true >d</button>
-                <button id = "botonF" value = "f" disabled = true >f</button>
-                <button id = "botonG" value = "g" disabled = true >g</button>
-                <button id = "botonH" value = "h" disabled = true >h</button>
-                <button id = "botonJ" value = "j" disabled = true >j</button>
-                <button id = "botonK" value = "k" disabled = true >k</button>
-                <button id = "botonL" value = "l" disabled = true >l</button>
-                <button id = "botonÑ" value = "ñ" disabled = true >ñ</button><br>
-                <button id = "botonZ" value = "z" disabled = true >z</button>
-                <button id = "botonX" value = "x" disabled = true >x</button>
-                <button id = "botonC" value = "c" disabled = true >c</button>
-                <button id = "botonV" value = "v" disabled = true >v</button>
-                <button id = "botonB" value = "b" disabled = true >b</button>
-                <button id = "botonN" value = "n" disabled = true >n</button>
-                <button id = "botonM" value = "m" disabled = true >m</button>
+                <p id = "palabraR">Adivina la palabra:</p>
+                <button id = "q" value = "q" disabled = true >q</button>
+                <button id = "w" value = "w" disabled = true >w</button>
+                <button id = "e" value = "e" disabled = true >e</button>
+                <button id = "r" value = "r" disabled = true >r</button>
+                <button id = "t" value = "t" disabled = true >t</button>
+                <button id = "y" value = "y" disabled = true >y</button>
+                <button id = "u" value = "u" disabled = true >u</button>
+                <button id = "i" value = "i" disabled = true >i</button>
+                <button id = "o" value = "o" disabled = true >o</button>
+                <button id = "p" value = "p" disabled = true >p</button><br>
+                <button id = "a" value = "a" disabled = true >a</button>
+                <button id = "s" value = "s" disabled = true >s</button>
+                <button id = "d" value = "d" disabled = true >d</button>
+                <button id = "f" value = "f" disabled = true >f</button>
+                <button id = "g" value = "g" disabled = true >g</button>
+                <button id = "h" value = "h" disabled = true >h</button>
+                <button id = "j" value = "j" disabled = true >j</button>
+                <button id = "k" value = "k" disabled = true >k</button>
+                <button id = "l" value = "l" disabled = true >l</button>
+                <button id = "ñ" value = "ñ" disabled = true >ñ</button><br>
+                <button id = "z" value = "z" disabled = true >z</button>
+                <button id = "x" value = "x" disabled = true >x</button>
+                <button id = "c" value = "c" disabled = true >c</button>
+                <button id = "v" value = "v" disabled = true >v</button>
+                <button id = "b" value = "b" disabled = true >b</button>
+                <button id = "n" value = "n" disabled = true >n</button>
+                <button id = "m" value = "m" disabled = true >m</button>
             </div>
         </div>
     </body>
@@ -244,9 +315,9 @@
 
 <style>
 
-    button [id = botonQ],[id = botonW],[id = botonE],[id = botonR],[id = botonT],[id = botonY],[id = botonU],[id = botonI],[id = botonO],[id = botonP],
-    [id = botonA],[id = botonS],[id = botonD],[id = botonF],[id = botonG],[id = botonH],[id = botonJ],[id = botonK],[id = botonL],[id = botonÑ],
-    [id = botonZ],[id = botonX],[id = botonC],[id = botonV],[id = botonB],[id = botonN],[id = botonM],[id = botonQ] {
+    button [id = q],[id = w],[id = e],[id = r],[id = t],[id = y],[id = u],[id = i],[id = o],[id = p],
+    [id = a],[id = s],[id = d],[id = f],[id = g],[id = h],[id = j],[id = k],[id = l],[id = ñ],
+    [id = z],[id = x],[id = c],[id = v],[id = b],[id = n],[id = m],[id = q] {
 
         width: 30px;
         height: 30px;

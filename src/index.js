@@ -50,8 +50,24 @@ wss.on('connection', (ws) => {
             
             console.log(1);
             if(data=="anfitrion"){
+
                 console.log(2);
                 anfitrion = ws;
+                fetch('https://pow-3bae6d63ret5.deno.dev/word')
+                    .then(res => res.json())
+                    .then(json => {
+
+                        anfitrion.send(fun.noAcento(json.word));
+                });
+            }
+            else if(data=="1"){
+
+                fetch('https://pow-3bae6d63ret5.deno.dev/word')
+                    .then(res => res.json())
+                    .then(json => {
+                        
+                        anfitrion.send(fun.noAcento(json.word));
+                });
             }
             else if (players[0]==null){
                 console.log(3);
@@ -76,9 +92,16 @@ wss.on('connection', (ws) => {
                 ws.send("1");
             }   
         }
+        else if ((data+"")[0]=="2"){
+                
+            for(i=0; i<players.length; i++){
+
+                players[i].dir.send("2 "+data.slice(2));
+            }
+        }
         else if(data.indexOf(" ",2)==-1){
 
-            console.log(6);
+            console.log("6");
             anfitrion.send(data+"");
         }
         else if(data.indexOf(" ",2)!=-1){

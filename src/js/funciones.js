@@ -38,9 +38,15 @@ function name(cadena){
     }
 }
 
+function noAcento(str) {
+
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 module.exports = {
    
     "existe": existe,
     "name" : name,
-    "buscar" : buscar
+    "buscar" : buscar,
+    "noAcento" : noAcento
 }

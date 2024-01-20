@@ -3,6 +3,7 @@
 
     ws = new WebSocket("ws://localhost:1234");
     let aux = "";
+    let palabra = "";
 
     ws.addEventListener('open', () => {
 
@@ -11,7 +12,7 @@
         botonS.onclick = () => {
 
             ws.send(aux+" s");
-            entrada.value = "";
+            entrada.innerHTML = "";
             botonS.disabled = true;
             botonN.disabled = true;
         }
@@ -19,24 +20,43 @@
         botonN.onclick = () => {
 
             ws.send(aux+" n");
-            entrada.value = "";
+            entrada.innerHTML = "";
             botonS.disabled = true;
             botonN.disabled = true;
+        } 
+        cambiar.onclick = () => {
+
+            ws.send("1");
+        }
+        iniciar.onclick = () => {
+
+            ws.send(`2 ${palabra}`);
         }
     });
 
     ws.addEventListener('message', (data) => {
 
-        entrada.value = data.data[0];
-        aux = data.data;
-        botonS.disabled = false;
-        botonN.disabled = false;
+        if(data.data.indexOf(" ")!=-1){
+            
+            entrada.innerHTML =`La letra que envio ${data.data.slice(2)} es: ${data.data[0]}`;
+            aux = data.data;
+            botonS.disabled = false;
+            botonN.disabled = false;
+        }
+        else{
+
+            palabra = data.data;
+            palabraR.innerHTML = `La palabra seleccionada es: ${palabra}`;
+        }
     });
         
 </script>
 
 <html>
-    <textarea id="entrada" cols="10" rows="1" disabled = true ></textarea>
+    <p id="palabraR" cols="10" rows="1" disabled = true ></p>
+    <p id="entrada" cols="10" rows="1" disabled = true ></p>
     <button id="botonS" value="s" disabled = true >Si</button>
     <button id="botonN" value="n" disabled = true >No</button>
+    <button id="cambiar" >Cambiar palabra</button>
+    <button id="iniciar" >Iniciar partida</button>
 </html>
