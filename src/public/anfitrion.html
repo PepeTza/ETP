@@ -4,6 +4,7 @@
     ws = new WebSocket("ws://localhost:1234");
     let aux = "";
     let palabra = "";
+    let jugadoresC = 0;
 
     ws.addEventListener('open', () => {
 
@@ -30,13 +31,49 @@
         }
         iniciar.onclick = () => {
 
-            ws.send(`2 ${palabra}`);
+            if(jugadoresC>0){
+                ws.send(`2 ${palabra}`);
+                iniciar.disabled = true;
+                cambiar.disabled = true;
+            }
+            else{
+
+                window.alert("No hay jugadores conectados");
+            }
         }
     });
 
     ws.addEventListener('message', (data) => {
 
-        if(data.data.indexOf(" ")!=-1){
+        if((data.data+"")[0]=="1"){
+
+            jugadoresC++;
+            jugadores.innerHTML = "Jugadores conectados: " + jugadoresC;
+        }
+        else if((data.data+"")[0]=="2"){
+
+            jugadoresC--;
+            jugadores.innerHTML = "Jugadores conectados: " + jugadoresC;
+        }
+        else if((data.data+"")[0]=="3"){
+
+            window.alert(`El jugador ${data.data.slice(2)} es el ganador, inicie una nueva partida cuando desee`);
+            ws.send("1");
+            iniciar.disabled = false;
+            cambiar.disabled = false;
+        }
+        else if((data.data+"")[0]=="4"){
+
+            window.alert("Todos los jugadores perdieron, inicie una nueva partida cuando desee");
+            ws.send("1");
+            iniciar.disabled = false;
+            cambiar.disabled = false;
+        }
+        else if((data.data+"")[0]=="5"){
+
+            window.alert("No puede haber mas de un anfitrion");
+        }
+        else if(data.data.indexOf(" ")!=-1){
             
             entrada.innerHTML =`La letra que envio ${data.data.slice(2)} es: ${data.data[0]}`;
             aux = data.data;
@@ -53,8 +90,9 @@
 </script>
 
 <html>
-    <p id="palabraR" cols="10" rows="1" disabled = true ></p>
-    <p id="entrada" cols="10" rows="1" disabled = true ></p>
+    <p id="jugadores"></p>
+    <p id="palabraR" disabled = true ></p>
+    <p id="entrada" disabled = true ></p>
     <button id="botonS" value="s" disabled = true >Si</button>
     <button id="botonN" value="n" disabled = true >No</button>
     <button id="cambiar" >Cambiar palabra</button>

@@ -6,9 +6,10 @@ const WebSocket = require('ws');
 const fun = require("./js/funciones");
 
 let players = [];
-let anfitrion;
-let destino;
+let anfitrion = null;
+let todosPerdieron;
 let turno = 0;
+let iniciado = false;
 
 app.set('puerto', 1234);
 
@@ -49,17 +50,21 @@ wss.on('connection', (ws) => {
 
         if (data.indexOf(" ")==-1){
             
-            console.log(1);
             if(data=="anfitrion"){
 
-                console.log(2);
-                anfitrion = ws;
-                fetch('https://pow-3bae6d63ret5.deno.dev/word')
-                    .then(res => res.json())
-                    .then(json => {
+                if (anfitrion==null){
+                    anfitrion = ws;
+                    fetch('https://pow-3bae6d63ret5.deno.dev/word')
+                        .then(res => res.json())
+                        .then(json => {
 
-                        anfitrion.send(fun.noAcento(json.word));
-                });
+                            anfitrion.send(fun.noAcento(json.word));
+                    });
+                }
+                else {
+                    ws.send("5");
+                    ws.close();
+                }
             }
             else if(data=="1"){
 
@@ -70,26 +75,66 @@ wss.on('connection', (ws) => {
                         anfitrion.send(fun.noAcento(json.word));
                 });
             }
+            else if(anfitrion!=null){
+
+                ws.send("7");
+            }
             else if (players[0]==null){
-                console.log(3);
-                let player = {
+
+                if(!iniciado){
+                    
+                    let player = {
     
-                    username : data,
-                    dir : ws
+                        username : String(data),
+                        dir : ws,
+                        estado : 1
+                        }
+                    players.push(player);
+                    anfitrion.send("1");
+                    ws.send("0");
                 }
-                players.push(player);
+                else{
+                    
+                    let player = {
+    
+                        username : String(data),
+                        dir : ws,
+                        estado : 2
+                        }
+                    players.push(player);
+                    anfitrion.send("1");
+                    ws.send("6");
+                }
             }
             else if (!fun.existe(players,String(data))){
-                console.log(4);
-                let player = {
+
+                if(!iniciado){
+                    
+                    let player = {
     
-                    username : String(data),
-                    dir : ws
+                        username : String(data),
+                        dir : ws,
+                        estado : 1
+                        }
+                    players.push(player);
+                    anfitrion.send("1");
+                    ws.send("0");
                 }
-                players.push(player);
+                else{
+                    
+                    let player = {
+    
+                        username : String(data),
+                        dir : ws,
+                        estado : 2
+                        }
+                    players.push(player);
+                    anfitrion.send("1");
+                    ws.send("6");
+                }
             }
             else{
-                console.log(5);
+   
                 ws.send("1");
             }   
         }
@@ -99,29 +144,142 @@ wss.on('connection', (ws) => {
 
                 players[i].dir.send("2 "+data.slice(2));
             }
-            players[turno].dir.send("3");
+            turno = fun.turnoSiguiente(players,-1);
+            if (players[turno].estado==1) players[turno].dir.send("3");
             for(i=0; i<players.length; i++){
 
                 if (i!=turno) players[i].dir.send("4 "+players[turno].username);
             }
         }
+        else if ((data+"")[0]=="3"){
+
+            for(i = 0; i<players.length; i++){
+
+                if (players[i].dir!=ws){
+    
+                    players[i].dir.send("5 "+data.slice(2));
+                }
+            }
+            anfitrion.send("3 "+data.slice(2));
+            for(i=0; i<players.length; i++){
+
+                if (players[i].estado==-1){
+                    players.splice(i,1);
+                    i--;
+                }
+            }
+            for(i=0; i<players.length; i++){
+
+                players[i].estado = 1;
+            }
+            total = 0;
+        }
+        else if ((data+"")[0]=="4"){
+
+            for(i = 0; i<players.length; i++){
+
+                if (players[i].dir==ws){
+    
+                    players[i].estado = 0;
+                }
+            }
+            todosPerdieron = true;
+            for(i = 0; i<players.length; i++){
+
+                if (players[i].estado==1){
+
+                    todosPerdieron = false;
+                }
+            }
+            if(todosPerdieron){
+
+                anfitrion.send("4");
+                for(i=0; i<players.length; i++){
+
+                    if (players[i].estado==-1){
+                        players.splice(i,1);
+                        i--;
+                    }
+                }
+                for(i=0; i<players.length; i++){
+
+                    players[i].estado = 1;
+                }
+                turno = 0;
+            }
+        }
         else if(data.indexOf(" ",2)==-1){
 
-            console.log("6");
             anfitrion.send(data+"");
-            if(turno!=players.length-1) turno++;
-            else turno = 0;
-            console.log("turno: "+turno);
+            turno = fun.turnoSiguiente(players, turno);
+            iniciado = true;
         }
         else if(data.indexOf(" ",2)!=-1){
 
-            console.log("player="+fun.buscar(players, fun.name(data)));
-            destino = players[fun.buscar(players, fun.name(data))].dir;
-            destino.send(data+"");
-            players[turno].dir.send("3");
+            console.log(String(fun.buscar(players, fun.name(data))), String(fun.name(data)));
+            players[fun.turnoAnterior(players, turno-1)].dir.send(data+"");
+            if (players[turno].estado==1) players[turno].dir.send("3");
             for(i=0; i<players.length; i++){
 
                 if (i!=turno) players[i].dir.send("4 "+players[turno].username);
+            }
+        }
+    })
+
+    ws.on('close', () => {
+
+        if(ws==anfitrion) anfitrion = null; 
+        else{
+
+            for(i = 0; i<players.length; i++){
+
+                if (players[i].dir==ws){
+
+                    players[i].estado = -1;
+                    console.log(players[i].username,turno,1);
+                    anfitrion.send("2");
+                    console.log(`${players[i].username} se desconecto`);
+                    if (i==turno){
+
+                        console.log("entre");
+                        turno = fun.turnoSiguiente(players, turno);
+                        console.log(turno,4);
+                        if (turno!=-1){
+                            players[turno].dir.send("3");
+                            for(i=0; i<players.length; i++){
+
+                                if (i!=turno) players[i].dir.send("4 "+players[turno].username);
+                            }
+                        }
+                        else{
+                            todosPerdieron = true;
+                            for(i = 0; i<players.length; i++){
+
+                                if (players[i].estado==1){
+                                    console.log("hola",1);
+                                    todosPerdieron = false;
+                                }
+                            }
+                            console.log(todosPerdieron,3);
+                            if(todosPerdieron){
+
+                                anfitrion.send("4");
+                                for(i=0; i<players.length; i++){
+
+                                    if (players[i].estado==-1){
+                                        players.splice(i,1);
+                                        i--;
+                                    }
+                                }
+                                for(i=0; i<players.length; i++){
+
+                                    players[i].estado = 1;
+                                }
+                                turno = 0;
+                            }
+                        }
+                    }
+                }
             }
         }
     })
