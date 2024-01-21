@@ -1,6 +1,60 @@
 <!DOCTYPE html>
 
 <html>
-    <a href="./jugador"><button>Jugador</button></a>
-    <a href="./anfitrion"><button>Anfitrion</button></a>
+
+    <body>
+       
+        <div class = "contenedor">
+
+            <div class = "hijo">
+    
+                <a href="./jugador"><button>Jugador</button></a>
+                <a href="./anfitrion"><button>Anfitrion</button></a>
+            </div>
+        </div>
+    </body>
 </html>
+
+<style>
+
+    .contenedor {
+    
+        width: 600px;
+        height: 600px;
+        border-radius: 10px;
+        border-style: solid;
+        position: absolute; 
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(#a764e6, #91e5bb);
+        padding: 20px;
+    }
+
+    .hijo {
+
+        display: flex;
+        width: 595px;
+        height: 595px;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+
+    body{
+
+        background-color: gray;
+    }
+
+    button{
+
+        background-color: gray;
+        width: 300px;
+        height: 200px;
+        border-radius: 3%;
+        border-style: solid;
+        font-size: 40px;
+        color: white;
+    }
+</style>

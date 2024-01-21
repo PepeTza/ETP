@@ -10,33 +10,33 @@
 
         ws.send("anfitrion");
 
-        botonS.onclick = () => {
-
+        botonS.onclick = () => {    //Envia al servidor un mensaje con el formato [q, ,n,o,m,b,r,e, ,s]
+                                    //En el lugar de la "q" va la letra actual 
             ws.send(aux+" s");
             entrada.innerHTML = "";
             botonS.disabled = true;
             botonN.disabled = true;
         }
 
-        botonN.onclick = () => {
-
+        botonN.onclick = () => {    //Envia al servidor un mensaje con el formato [q, ,n,o,m,b,r,e, ,n]
+                                    //En el lugar de la "q" va la letra actual 
             ws.send(aux+" n");
             entrada.innerHTML = "";
             botonS.disabled = true;
             botonN.disabled = true;
         } 
-        cambiar.onclick = () => {
+        cambiar.onclick = () => {   //Envia el codigo "1" al servidor
 
             ws.send("1");
         }
-        iniciar.onclick = () => {
+        iniciar.onclick = () => {   //El anfitrion intenta iniciar la partida
 
-            if(jugadoresC>0){
+            if(jugadoresC>0){       //Si hay jugadores conectados inicia la partida
                 ws.send(`2 ${palabra}`);
                 iniciar.disabled = true;
                 cambiar.disabled = true;
             }
-            else{
+            else{                   //Caso contrario avisa al anfitrion
 
                 window.alert("No hay jugadores conectados");
             }
@@ -45,42 +45,42 @@
 
     ws.addEventListener('message', (data) => {
 
-        if((data.data+"")[0]=="1"){
+        if((data.data+"")[0]=="1"){     //El servidor avisa que se conecto un jugador
 
             jugadoresC++;
             jugadores.innerHTML = "Jugadores conectados: " + jugadoresC;
         }
-        else if((data.data+"")[0]=="2"){
+        else if((data.data+"")[0]=="2"){ //El servidor avisa que se perdio conexion con un jugador
 
             jugadoresC--;
             jugadores.innerHTML = "Jugadores conectados: " + jugadoresC;
         }
-        else if((data.data+"")[0]=="3"){
+        else if((data.data+"")[0]=="3"){    //El servidor avisa que un jugador gano la partida
 
             window.alert(`El jugador ${data.data.slice(2)} es el ganador, inicie una nueva partida cuando desee`);
             ws.send("1");
             iniciar.disabled = false;
             cambiar.disabled = false;
         }
-        else if((data.data+"")[0]=="4"){
+        else if((data.data+"")[0]=="4"){    //El servidor avisa que todos los jugadores perdieron la partida
 
             window.alert("Todos los jugadores perdieron, inicie una nueva partida cuando desee");
             ws.send("1");
             iniciar.disabled = false;
             cambiar.disabled = false;
         }
-        else if((data.data+"")[0]=="5"){
+        else if((data.data+"")[0]=="5"){    //El servidor avisa que no puede haber mas de un anfitrion
 
             window.alert("No puede haber mas de un anfitrion");
         }
-        else if(data.data.indexOf(" ")!=-1){
+        else if(data.data.indexOf(" ")!=-1){    //Si el mensaje recibido contiene espacios es una solicitud de letra de algun jugador
             
             entrada.innerHTML =`La letra que envio ${data.data.slice(2)} es: ${data.data[0]}`;
             aux = data.data;
             botonS.disabled = false;
             botonN.disabled = false;
         }
-        else{
+        else{       //Si el mensaje recibido no contiene espacios es una palabra aleatoria nueva
 
             palabra = data.data;
             palabraR.innerHTML = `La palabra seleccionada es: ${palabra}`;

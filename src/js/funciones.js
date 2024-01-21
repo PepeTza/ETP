@@ -123,7 +123,7 @@ function cambiarEstado(players, nuevoEstado){   //Cambia la variable estado para
     }
 }
 
-function cambiarEstadoIndividual(players, ws, nuevoEstado){     //Cambia el estado de un solo jugador 
+function cambiarEstadoIndividual(players, ws, nuevoEstado){     //Cambia el estado de un solo jugador buscandolo por su variable ws
 
     for(i = 0; i<players.length; i++){
 
@@ -134,8 +134,8 @@ function cambiarEstadoIndividual(players, ws, nuevoEstado){     //Cambia el esta
     }
 }
 
-function todosPerdieron(players, todosPerdieron){
-
+function todosPerdieron(players, todosPerdieron){       //Verifica si todos los usuarios perdieron y devuelve true de ser el caso, en caso contrario devuelve false 
+                                                        //Se debe llamar de la forma todosPerdieron(players, true);
     for(i = 0; i<players.length; i++){
 
         if (players[i].estado==1){
@@ -146,7 +146,7 @@ function todosPerdieron(players, todosPerdieron){
     return todosPerdieron;
 }
 
-function anfitrionDesconectado(players){
+function anfitrionDesconectado(players){    //Envia codigo "8" y desconecta a todos los jugadores
 
     for(i=1; i<players.length; i++){
 
@@ -155,7 +155,7 @@ function anfitrionDesconectado(players){
     }
 }
 
-function buscarPorWS(players, ws){
+function buscarPorWS(players, ws){      //Busca un jugador por su variable ws y devuelve su posicion en la lista, devuelve -1 si no lo encuentra
 
     for(i = 0; i<players.length; i++){
 
