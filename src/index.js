@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, './plublic/')));
 
 const wss = new WebSocket.Server({server:server});
 
-app.get('/', (req,res) => {
+app.get('/', (req,res) => {                    //Envia el HTML de la pantalla principal
 
     res.sendFile('./public/index.html', {
 
@@ -26,17 +26,17 @@ app.get('/', (req,res) => {
     })
 })
 
-app.get('/jugador', (req,res) => {
+app.get('/jugador', (req,res) => {             //Envia el HTML de la pantalla del jugador
 
-    res.sendFile('./public/jugador.html', {
+    res.sendFile('./public/jugador.html', {     
 
         root: __dirname
     })
 })
 
-app.get('/anfitrion', (req,res) => {
+app.get('/anfitrion', (req,res) => {           //Envia el HTML de la pantalla del anfitrion
 
-    res.sendFile('./public/anfitrion.html', {
+    res.sendFile('./public/anfitrion.html', {  
 
         root: __dirname
     })
@@ -48,236 +48,151 @@ wss.on('connection', (ws) => {
 
     ws.on('message', (data) => {
 
-        if (data.indexOf(" ")==-1){
-            
-            if(data=="anfitrion"){
-
-                if (anfitrion==null){
+        if (data.indexOf(" ")==-1){                         
+                                                           
+            if(data=="anfitrion"){                            //Al recibir el mensaje "anfitrion" revisa si ya existe o no un anfitrion para el juego                 
+                                                              //Si no existe un anfitrion se registra como anfitrion al emizor del mensaje y se le envia una palabra aleatoria 
+                if (anfitrion==null){                         //Si ya existe un anfitrion se envia el codigo "5" 
                     anfitrion = ws;
-                    fetch('https://pow-3bae6d63ret5.deno.dev/word')
-                        .then(res => res.json())
-                        .then(json => {
-
-                            anfitrion.send(fun.noAcento(json.word));
-                    });
+                    fun.palabraAleatoria(anfitrion);
                 }
                 else {
                     ws.send("5");
                     ws.close();
                 }
             }
-            else if(data=="1"){
+            else if(data=="1"){                               //Al recibir el codigo "1" se le enviara una nueva palabra al anfitrion  
 
-                fetch('https://pow-3bae6d63ret5.deno.dev/word')
-                    .then(res => res.json())
-                    .then(json => {
-                        
-                        anfitrion.send(fun.noAcento(json.word));
-                });
+                fun.palabraAleatoria(anfitrion);
             }
-            else if(anfitrion!=null){
+            else if(anfitrion==null){                         //Si un jugador intenta conectarse a la partida y no hay un anfitrion se le envia el codigo "7"
 
                 ws.send("7");
-            }
-            else if (players[0]==null){
+            }                                                 
+            else if (players[0]==null){                                //Revisa si la lista de jugadores esta vacia 
 
-                if(!iniciado){
+                if(!iniciado){                                         //Si la lista esta vacia y la partida no esta iniciada se crea el nuevo jugador con (estado = 1) y se mete en la lista de jugadores
                     
-                    let player = {
-    
-                        username : String(data),
-                        dir : ws,
-                        estado : 1
-                        }
+                    let player;
+                    player = fun.generarPlayer(player, data, ws, 1);
                     players.push(player);
                     anfitrion.send("1");
                     ws.send("0");
                 }
-                else{
+                else{                                                  //Si la lista esta vacia y la partida esta iniciada se crea el nuevo jugador con (estado = 2) y se mete en la lista de jugadores
                     
-                    let player = {
-    
-                        username : String(data),
-                        dir : ws,
-                        estado : 2
-                        }
+                    let player;
+                    player = fun.generarPlayer(player, data, ws, 2);
                     players.push(player);
                     anfitrion.send("1");
                     ws.send("6");
                 }
             }
-            else if (!fun.existe(players,String(data))){
+            else if (!fun.existe(players,String(data))){               //Revisa si ya existe un jugador con cierto nombre en la lista  
 
-                if(!iniciado){
+                if(!iniciado){                                         //Si no existe un jugador con ese nombre y la partida no esta iniciada se crea el nuevo jugador con (estado = 1) y se mete en la lista de jugadores
                     
-                    let player = {
-    
-                        username : String(data),
-                        dir : ws,
-                        estado : 1
-                        }
+                    let player;
+                    player = fun.generarPlayer(player, data, ws, 1);   
                     players.push(player);
                     anfitrion.send("1");
                     ws.send("0");
                 }
-                else{
+                else{                                                  //Si no existe un jugador con ese nombre y la partida esta iniciada se crea el nuevo jugador con (estado = 2) y se mete en la lista de jugadores
                     
-                    let player = {
-    
-                        username : String(data),
-                        dir : ws,
-                        estado : 2
-                        }
+                    let player;
+                    player = fun.generarPlayer(player, data, ws, 2);
                     players.push(player);
                     anfitrion.send("1");
                     ws.send("6");
                 }
             }
-            else{
+            else{                     //Si ya existe un jugador con ese nombre se envia un codigo "1"
    
                 ws.send("1");
             }   
         }
-        else if ((data+"")[0]=="2"){
+        else if ((data+"")[0]=="2"){    //Si el primer caracter del mensaje es "2" significa que el anfitrion va a iniciar la partida, para lo cual se le informa a todos los jugadores de quien es el primer turno
                 
-            for(i=0; i<players.length; i++){
-
-                players[i].dir.send("2 "+data.slice(2));
-            }
+            iniciado = true;
+            fun.enviarATodosJugadores(players, "2 "+data.slice(2), -1);
             turno = fun.turnoSiguiente(players,-1);
             if (players[turno].estado==1) players[turno].dir.send("3");
-            for(i=0; i<players.length; i++){
-
-                if (i!=turno) players[i].dir.send("4 "+players[turno].username);
-            }
+            fun.enviarATodosJugadores(players, "2 "+data.slice(2), turno);
         }
-        else if ((data+"")[0]=="3"){
+        else if ((data+"")[0]=="3"){    //Si el primer caracter del mensaje es "3" significa que uno de los jugadores gano la partida, para lo cual se le informa al anfitrion y a todos los jugadores quien gano la partida y se prepara todo para la siguiente partida
 
-            for(i = 0; i<players.length; i++){
-
-                if (players[i].dir!=ws){
-    
-                    players[i].dir.send("5 "+data.slice(2));
-                }
-            }
+            fun.enviarATodosJugadoresWS(players, "5 "+data.slice(2), ws, false);
             anfitrion.send("3 "+data.slice(2));
-            for(i=0; i<players.length; i++){
-
-                if (players[i].estado==-1){
-                    players.splice(i,1);
-                    i--;
-                }
-            }
-            for(i=0; i<players.length; i++){
-
-                players[i].estado = 1;
-            }
-            total = 0;
+            players = fun.eliminarDesconectados(players);
+            fun.cambiarEstado(players, 1);
+            turno = 0;
+            iniciado = false;
         }
-        else if ((data+"")[0]=="4"){
+        else if ((data+"")[0]=="4"){    //Si el primer caracter del mensaje es "4" significa que el usuario emisor perdio, se verifica si aun quedan usuarios activos, de no ser el caso se termina la partida       
 
-            for(i = 0; i<players.length; i++){
-
-                if (players[i].dir==ws){
-    
-                    players[i].estado = 0;
-                }
-            }
-            todosPerdieron = true;
-            for(i = 0; i<players.length; i++){
-
-                if (players[i].estado==1){
-
-                    todosPerdieron = false;
-                }
-            }
+            fun.cambiarEstadoIndividual(players, ws, 0);
+            todosPerdieron = fun.todosPerdieron(players, true);
+            console.log(todosPerdieron);
             if(todosPerdieron){
 
                 anfitrion.send("4");
-                for(i=0; i<players.length; i++){
-
-                    if (players[i].estado==-1){
-                        players.splice(i,1);
-                        i--;
-                    }
-                }
-                for(i=0; i<players.length; i++){
-
-                    players[i].estado = 1;
-                }
+                players = fun.eliminarDesconectados(players);
+                fun.cambiarEstado(players,1);
                 turno = 0;
+                iniciado = false;
             }
         }
-        else if(data.indexOf(" ",2)==-1){
-
+        else if(data.indexOf(" ",2)==-1){   //Verifica si hay espacios despues del segundo caracter, si no hay espacios es un mensaje de un jugador y el cual contiene la letra enviada como primer caracter, luego un espacio y su nombre
+                                            //Luego se le envia la solicitud al servidor para que revise la letra que le envio el jugador
             anfitrion.send(data+"");
             turno = fun.turnoSiguiente(players, turno);
-            iniciado = true;
         }
-        else if(data.indexOf(" ",2)!=-1){
-
-            console.log(String(fun.buscar(players, fun.name(data))), String(fun.name(data)));
-            players[fun.turnoAnterior(players, turno-1)].dir.send(data+"");
-            if (players[turno].estado==1) players[turno].dir.send("3");
-            for(i=0; i<players.length; i++){
-
-                if (i!=turno) players[i].dir.send("4 "+players[turno].username);
+        else if(data.indexOf(" ",2)!=-1){   //Esta es la respuesta del anfitrion al jugador que envia una letra, se identifica porque despues del segundo caracter si hay un espacio
+                                            //Ademas le avisa al siguiente jugador que es su turno
+            if (players[0]!=null) players[fun.turnoAnterior(players, turno-1)].dir.send(data+"");
+            if (players[turno].estado==1){
+                
+                players[turno].dir.send("3");
+                fun.enviarATodosJugadores(players, "4 "+players[turno].username, turno);
             }
         }
     })
 
     ws.on('close', () => {
 
-        if(ws==anfitrion) anfitrion = null; 
-        else{
+        if(ws==anfitrion){  //Si el anfitrion se desconecta se actualizan los valores y se desconecta a todos los jugadores
+            
+            anfitrion = null;
+            fun.anfitrionDesconectado(players);
+            players = [];
+        } 
+        else if(fun.buscarPorWS(players, ws)!=-1){   //Si el desconectado es un jugador se notifica al anfitrion y se cambia su estado a (estado = -1), y si es el turno de ese jugador se pasa el turno al siguiente jugador activo
+                                                     //Si no hay mas jugadores activos se acaba la partida y se prepara la siguiente
+            let desconectado = fun.buscarPorWS(players, ws);
 
-            for(i = 0; i<players.length; i++){
+            players[desconectado].estado = -1;
+            anfitrion.send("2");
+            console.log(`${players[desconectado].username} se desconecto`);
+            if (desconectado==turno){
 
-                if (players[i].dir==ws){
+                turno = fun.turnoSiguiente(players, turno);
+                if (turno!=-1){
 
-                    players[i].estado = -1;
-                    console.log(players[i].username,turno,1);
-                    anfitrion.send("2");
-                    console.log(`${players[i].username} se desconecto`);
-                    if (i==turno){
+                    players[turno].dir.send("3");
+                    fun.enviarATodosJugadores(players, "4 "+players[turno].username, turno);
+                }
+                else{
 
-                        console.log("entre");
-                        turno = fun.turnoSiguiente(players, turno);
-                        console.log(turno,4);
-                        if (turno!=-1){
-                            players[turno].dir.send("3");
-                            for(i=0; i<players.length; i++){
+                    todosPerdieron = fun.todosPerdieron(players, true);
+                    console.log(todosPerdieron);
+                    if(todosPerdieron){
 
-                                if (i!=turno) players[i].dir.send("4 "+players[turno].username);
-                            }
-                        }
-                        else{
-                            todosPerdieron = true;
-                            for(i = 0; i<players.length; i++){
-
-                                if (players[i].estado==1){
-                                    console.log("hola",1);
-                                    todosPerdieron = false;
-                                }
-                            }
-                            console.log(todosPerdieron,3);
-                            if(todosPerdieron){
-
-                                anfitrion.send("4");
-                                for(i=0; i<players.length; i++){
-
-                                    if (players[i].estado==-1){
-                                        players.splice(i,1);
-                                        i--;
-                                    }
-                                }
-                                for(i=0; i<players.length; i++){
-
-                                    players[i].estado = 1;
-                                }
-                                turno = 0;
-                            }
-                        }
+                        anfitrion.send("4");
+                        players = fun.eliminarDesconectados(players);
+                        fun.cambiarEstado(players,1);
+                        turno = 0;
+                        iniciado = false;
                     }
                 }
             }

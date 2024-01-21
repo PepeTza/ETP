@@ -11,7 +11,7 @@
     let palabraO;
     let inicio = false;
     let general = [];
-    let vidas = 6;
+    let vidas = 1;
     
     ws.addEventListener('open', (data) => {
 
@@ -213,13 +213,14 @@
                 palabra = data.data.slice(2);
                 palabraO = palabra.split('').map(letter => (general.indexOf(letter) >= 0 ? letter : " _ ")).join('');
                 palabraR.innerHTML = "Adivina la palabra: "+palabraO;
-                vidas = 6;
                 vida.innerHTML = "Vidas restantes: "+vidas;
+                inicio = true;
                 window.alert("La partida acaba de empezar");
             }
             else if ((data.data+"")[0]=="3"){
 
-                if(vidas!=0){
+                if(vidas!=0 && inicio==true){
+
                     window.alert("Es tu turno");
                     for (i=0; i<botones.length; i++) botones[i].disabled = false;
                     if(botonesUsados[0]!==null) for(i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
@@ -227,7 +228,7 @@
             }
             else if ((data.data+"")[0]=="4"){
 
-                window.alert(`Es el turno de ${data.data.slice(2)}`);
+                if (inicio == true) window.alert(`Es el turno de ${data.data.slice(2)}`);
             }
             else if ((data.data+"")[0]=="5"){
 
@@ -244,6 +245,12 @@
             else if ((data.data+"")[0]=="7"){
 
                 window.alert("El anfitrion no se encuentra conectado, intente de nuevo mas tarde");
+                username.disabled = false;
+                submit.disabled = false;
+            }
+            else if ((data.data+"")[0]=="8"){
+
+                window.alert("El anfitrion se desconecto, recargue la pagina por favor");
                 username.disabled = false;
                 submit.disabled = false;
             }
@@ -266,9 +273,11 @@
                 palabraR.innerHTML = "Adivina la palabra: "+palabraO;
                 if (palabraO.indexOf("_")==-1){
 
+                    inicio = false;
                     window.alert("Felicidades, ganaste la partida");
                     ws.send("3 "+user);
                     for (i=0; i<botones.length; i++) botones[i].disabled = true;
+                    vidas = 6;
                 }
             }
             else if(data.data[data.data.length-1]=="n"){
@@ -281,6 +290,8 @@
                     for (i=0; i<botones.length; i++) botones[i].disabled = true;
                     window.alert("Perdiste, espera a que la partida termine");
                     botonesUsados = [];
+                    vidas = 6;
+                    inicio = false;
                 }
             }
         })
