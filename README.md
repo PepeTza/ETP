@@ -14,4 +14,8 @@ Dependencias {
     "ws": "^8.16.0"
 }
 
+Pude comprobar que al usar esta opcion el juego corre bien, recomiendo usarla al probarlo, solo asegurese de estar en la carpeta del proyecto
+
 ![Alt text](image.png)
+
+PD: Dios en ti confio
