@@ -11,7 +11,7 @@
     let palabraO;
     let inicio = false;
     let general = [];
-    let vidas = 1;
+    let vidas = 6;
     
     ws.addEventListener('open', (data) => {
 
@@ -216,6 +216,7 @@
                 vida.innerHTML = "Vidas restantes: "+vidas;
                 inicio = true;
                 window.alert("La partida acaba de empezar");
+                hangmanI.src = "./src/public/images/hangman-0.jpg";
             }
             else if ((data.data+"")[0]=="3"){
 
@@ -283,6 +284,36 @@
             else if(data.data[data.data.length-1]=="n"){
 
                 vidas--;
+                switch (vidas) {
+
+                    case 5: hangmanI.src = "./src/public/images/hangman-1.jpg";
+
+                        break;
+
+                    case 4: hangmanI.src = "./src/public/images/hangman-2.jpg";
+
+                        break;
+                    
+                    case 3: hangmanI.src = "./src/public/images/hangman-3.jpg";
+
+                        break;
+                    
+                    case 2: hangmanI.src = "./src/public/images/hangman-4.jpg";
+
+                        break;
+
+                    case 1: hangmanI.src = "./src/public/images/hangman-5.jpg";
+
+                        break;
+
+                    case 0: hangmanI.src = "./src/public/images/hangman-6.jpg";
+
+                        break;
+
+                    default:
+
+                        break;
+                }
                 vida.innerHTML = `Vidas restantes: ${vidas}`;
                 if (vidas == 0){
 
@@ -304,22 +335,25 @@
         <title>El ahorcado</title>
     </head>
     <body class="container">
-        <div class="row mt-4">
-            <div class="col-sm-6">
-                <div>Aqui va el nombre de usuario</div><br>
-                <textarea id="username" cols="15" rows="1"></textarea><br>
-                <button id = "submit">Submit</button>
-            </div>
+
+        <div class="nombre-usuario">
+
+            <label for="username">Nombre de usuario: </label>
+            <input id="username" cols="10" rows="1"></input>
+            <button id = "submit">Submit</button>
         </div>
-        <div class="row mt-4">
-            <div class="col-sm-6">
-                <div>Aqui va el dibujo</div>
-                <textarea id="pantalla" cols="10" rows="15"></textarea>
-            </div>
+        <div class="hangman">
+            
+            <img id = "hangmanI" src="./src/public/images/hangman-0.jpg" width = 298px height = 291px>
         </div>
-        <div class="row mt-4">
-            <div class="col-sm-6">
-                <p id = "palabraR">Adivina la palabra:</p>
+        <div class="palabra" >
+
+            <p id = "palabraR">Adivina la palabra:</p>
+        </div>
+        <div>
+
+            <div class = "primeras-letras">
+
                 <button id = "q" value = "q" disabled = true >q</button>
                 <button id = "w" value = "w" disabled = true >w</button>
                 <button id = "e" value = "e" disabled = true >e</button>
@@ -329,7 +363,10 @@
                 <button id = "u" value = "u" disabled = true >u</button>
                 <button id = "botonI" value = "i" disabled = true >i</button>
                 <button id = "o" value = "o" disabled = true >o</button>
-                <button id = "p" value = "p" disabled = true >p</button><br>
+                <button id = "p" value = "p" disabled = true >p</button>
+            </div>
+            <div class = "segundas-letras">
+
                 <button id = "a" value = "a" disabled = true >a</button>
                 <button id = "s" value = "s" disabled = true >s</button>
                 <button id = "d" value = "d" disabled = true >d</button>
@@ -338,7 +375,10 @@
                 <button id = "h" value = "h" disabled = true >h</button>
                 <button id = "j" value = "j" disabled = true >j</button>
                 <button id = "k" value = "k" disabled = true >k</button>
-                <button id = "l" value = "l" disabled = true >l</button><br>
+                <button id = "l" value = "l" disabled = true >l</button>
+            </div>
+            <div class = "terceras-letras">
+
                 <button id = "z" value = "z" disabled = true >z</button>
                 <button id = "x" value = "x" disabled = true >x</button>
                 <button id = "c" value = "c" disabled = true >c</button>
@@ -346,8 +386,11 @@
                 <button id = "b" value = "b" disabled = true >b</button>
                 <button id = "n" value = "n" disabled = true >n</button>
                 <button id = "m" value = "m" disabled = true >m</button>
-                <p id = "vida">Vidas restantes: </p>
             </div>
+        </div>
+        <div class = "vidas-restantes">
+
+            <p id = "vida">Vidas restantes: </p>
         </div>
     </body>
 </html>
@@ -360,12 +403,72 @@
 
         width: 30px;
         height: 30px;
+        border-style: solid;
+        border-radius: 10%;
     }
 
     button [id = submit] {
 
         width: 50px;
         height: 65px;
+    }
+
+    body{
+
+        background-color: gray;
+        color : white;
+    }
+
+    .hangman{
+
+        position: relative;
+        text-align: center;
+        top: 50px;
+    }
+
+    .palabra{
+
+        position: relative;
+        text-align: center;
+        top: 50px;
+        font-size: 20px;
+    }
+
+    .nombre-usuario{
+
+        position: relative;
+        top: 10px;
+        left: 10px;
+        font-size: 20px;
+    }
+
+    .primeras-letras{
+
+        position: relative;
+        text-align: center;
+        top: 50px;
+    }
+
+    .segundas-letras{
+
+        position: relative;
+        text-align: center;
+        top: 55px;
+    }
+
+    .terceras-letras{
+
+        position: relative;
+        text-align: center;
+        top: 60px;
+    }
+
+    .vidas-restantes{
+
+        position: absolute;
+        top: 5px;
+        right: 60px;
+        font-size: 20px;
     }
 
 </style>

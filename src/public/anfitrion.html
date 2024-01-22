@@ -83,18 +83,120 @@
         else{       //Si el mensaje recibido no contiene espacios es una palabra aleatoria nueva
 
             palabra = data.data;
-            palabraR.innerHTML = `La palabra seleccionada es: ${palabra}`;
+            palabraR.innerHTML = `${palabra}`;
         }
     });
         
 </script>
 
 <html>
-    <p id="jugadores"></p>
-    <p id="palabraR" disabled = true ></p>
-    <p id="entrada" disabled = true ></p>
-    <button id="botonS" value="s" disabled = true >Si</button>
-    <button id="botonN" value="n" disabled = true >No</button>
-    <button id="cambiar" >Cambiar palabra</button>
-    <button id="iniciar" >Iniciar partida</button>
+
+    <head>
+
+        <title>Anfitrion</title>
+    </head>
+    <body>
+        
+        <div class = "conectados">
+
+            <p id="jugadores">Jugadores conectados: </p>
+        </div>
+        <div class = "contenedor">
+    
+            <div class="palabra-seleccionada">
+                <p>La palabra seleccinada: </p>
+            </div>
+            <div class="palabra-random">
+                <p id="palabraR" >Esperando palabra</p>
+            </div>
+            <div class="solicitud">
+        
+                <p id="entrada" disabled = true >...</p>
+            </div>
+               
+            <button class="boton" id="botonS" value="s" disabled = true width = 300px height = 200px>Si</button>
+            <button class="boton" id="botonN" value="n" disabled = true >No</button>
+            <div>
+        
+                <button id="cambiar" >Cambiar palabra</button>
+                <button id="iniciar" >Iniciar partida</button>
+            </div>
+        </div>
+    </body>
 </html>
+
+<style>
+
+    .conectados{
+
+        position: relative;
+        top: 10px;
+        left: 10px;
+        font-size: 20px;
+    }
+
+    .contenedor{
+
+        width: 600px;
+        height: 600px;
+        border-radius: 10px;
+        border-style: solid;
+        position: absolute; 
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(#a764e6, #91e5bb);
+        padding: 20px;
+        text-align: center;
+    }
+
+    .palabra-seleccionada{
+
+        font-size: 40px;
+        text-align: center;
+    }
+
+    .palabra-random{
+
+        font-size: 40px;
+        text-align: center;
+    }
+
+    .solicitud{
+
+        font-size: 40px;
+        text-align: center;
+    }
+
+    .boton{
+
+        position: relative;
+    }
+    button#botonS, button#botonN{
+
+        width: 200px;
+        height: 100px;
+        border-style: solid;
+        border-radius: 3%;
+        color: white;
+        background-color: gray;
+        font-size: 40px;
+    }
+
+    button#cambiar, button#iniciar{
+
+        width: 200px;
+        height: 100px;
+        border-style: solid;
+        border-radius: 3%;
+        color: white;
+        background-color: gray;
+        font-size: 40px;
+    }
+
+    body{
+
+        color : white;
+        background-color: gray;
+    }
+</style>

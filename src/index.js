@@ -14,7 +14,8 @@ let iniciado = false;
 app.set('puerto', 1234);
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, './plublic/')));
+app.use(express.static(path.join(__dirname, '/plublic/')));
+app.use(express.static(path.join(__dirname, '/plublic/images/')));
 
 const wss = new WebSocket.Server({server:server});
 
@@ -37,6 +38,62 @@ app.get('/jugador', (req,res) => {             //Envia el HTML de la pantalla de
 app.get('/anfitrion', (req,res) => {           //Envia el HTML de la pantalla del anfitrion
 
     res.sendFile('./public/anfitrion.html', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-0.jpg', (req,res) => {           //Envia el PNG de la primera imagen del hangman
+
+    res.sendFile('./public/images/hangman-0.jpg', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-1.jpg', (req,res) => {           //Envia el PNG de la segunda imagen del hangman
+
+    res.sendFile('./public/images/hangman-1.jpg', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-2.jpg', (req,res) => {           //Envia el PNG de la tercera imagen del hangman
+
+    res.sendFile('./public/images/hangman-2.jpg', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-3.jpg', (req,res) => {           //Envia el PNG de la cuarta imagen del hangman
+
+    res.sendFile('./public/images/hangman-3.jpg', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-4.jpg', (req,res) => {           //Envia el PNG de la quinta imagen del hangman
+
+    res.sendFile('./public/images/hangman-4.jpg', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-5.jpg', (req,res) => {           //Envia el PNG de la sexta imagen del hangman
+
+    res.sendFile('./public/images/hangman-5.jpg', {  
+
+        root: __dirname
+    })
+})
+
+app.get('/src/public/images/hangman-6.jpg', (req,res) => {           //Envia el PNG de la septima imagen del hangman
+
+    res.sendFile('./public/images/hangman-6.jpg', {  
 
         root: __dirname
     })
@@ -133,7 +190,6 @@ wss.on('connection', (ws) => {
 
             fun.cambiarEstadoIndividual(players, ws, 0);
             todosPerdieron = fun.todosPerdieron(players, true);
-            console.log(todosPerdieron);
             if(todosPerdieron){
 
                 anfitrion.send("4");
@@ -185,7 +241,6 @@ wss.on('connection', (ws) => {
                 else{
 
                     todosPerdieron = fun.todosPerdieron(players, true);
-                    console.log(todosPerdieron);
                     if(todosPerdieron){
 
                         anfitrion.send("4");
