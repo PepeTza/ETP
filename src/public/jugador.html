@@ -19,26 +19,26 @@
                 a, s, d, f, g, h, j, k, l, 
                 z, x, c, v, b, n, m];
 
-        submit.onclick = () => {
+        submit.onclick = () => {    //Envia el nombre de usuario al servidor
 
-            if(username.value.length<2){
+            if(username.value.length<2){    //Verifica si el nombre tiene mas de dos caracteres
 
                 window.alert("El nombre de usuario debe contener por lo menos dos caracteres");
             }
-            else if (username.value.indexOf(" ")==-1){
+            else if (username.value.indexOf(" ")==-1){  //Verifica si el nombre tiene espacios
 
                 user = username.value;
                 ws.send(user);
                 submit.disabled = true;
                 username.disabled = true; 
             }
-            else{
+            else{       //Avisa al jugador que el nombre tiene espacios
 
                 window.alert('El nombre de usuario no puede contener espacios');
             }
         }
 
-        q.onclick = () => {
+        q.onclick = () => {                                                 //Estas funciones envian el valor de su letra y bloquean los botones para fingir que termino su turno
 
             ws.send(q.value + ` ${user}`);
             botonesUsados.push(q);
@@ -195,20 +195,19 @@
             for (i=0; i<botones.length; i++) botones[i].disabled = true;
         }
 
-        ws.addEventListener('message', (data) => {
+        ws.addEventListener('message', (data) => {      
 
-            if((data.data+"")[0]=="0"){
+            if((data.data+"")[0]=="0"){     //Si va bien el registro llega aqui y le avisa al jugador que tiene que esperar que inicie la partida
 
                 window.alert("Espere que inicie la partida");
             }
-            else if((data.data+"")[0]=="1"){
+            else if((data.data+"")[0]=="1"){    //Avisa al usuario que el nombre esta en uso y vuelve a activar el boton y el campo de nombre de usuario
 
                 window.alert(`El nombre de usuario ${user} ya esta en uso`);
                 username.disabled = false;
-                submit.disabled = false;
-                for (i=0; i<botones.length; i++) botones[i].disabled = true;     
+                submit.disabled = false;     
             }
-            else if ((data.data+"")[0]=="2"){
+            else if ((data.data+"")[0]=="2"){   //Recibe la palabra, indica el inicio de la partida, si no es la primera partida reinicia la imagen del hangman
 
                 palabra = data.data.slice(2);
                 palabraO = palabra.split('').map(letter => (general.indexOf(letter) >= 0 ? letter : " _ ")).join('');
@@ -218,7 +217,7 @@
                 window.alert("La partida acaba de empezar");
                 hangmanI.src = "./src/public/images/hangman-0.jpg";
             }
-            else if ((data.data+"")[0]=="3"){
+            else if ((data.data+"")[0]=="3"){   //Le avisa al jugador que es su turno y desbloquea los botones de las letras
 
                 if(vidas!=0 && inicio==true){
 
@@ -227,39 +226,38 @@
                     if(botonesUsados[0]!==null) for(i=0; i<botonesUsados.length; i++) botonesUsados[i].disabled = true;
                 }
             }
-            else if ((data.data+"")[0]=="4"){
+            else if ((data.data+"")[0]=="4"){   //Avisa de quien es el turno actual
 
                 if (inicio == true) window.alert(`Es el turno de ${data.data.slice(2)}`);
             }
-            else if ((data.data+"")[0]=="5"){
+            else if ((data.data+"")[0]=="5"){   //Avisa si otro jugador gano la partida, bloquea los botones y vacia la lista de botones usados
 
                 window.alert(`El jugador ${data.data.slice(2)} gano la partida, espera al anfitrion`);
                 for (i=0; i<botones.length; i++) botones[i].disabled = true;
                 botonesUsados = [];
             }
-            else if ((data.data+"")[0]=="6"){
+            else if ((data.data+"")[0]=="6"){   //Si completa el registro y ya hay una partida en curso le avisa que tiene que esperar a que la misma termine
 
                 window.alert("Ya hay una partida en curso, espere que inicie una nueva partida");
                 for (i=0; i<botones.length; i++) botones[i].disabled = true;
-                botonesUsados = [];
             }
-            else if ((data.data+"")[0]=="7"){
+            else if ((data.data+"")[0]=="7"){   //Interrumpe el registro porque el anfitrion esta ausente
 
                 window.alert("El anfitrion no se encuentra conectado, intente de nuevo mas tarde");
                 username.disabled = false;
                 submit.disabled = false;
             }
-            else if ((data.data+"")[0]=="8"){
+            else if ((data.data+"")[0]=="8"){   //Avisa al jugador que debe reiniciar la pagina porque se perdio comunicacion con el anfitrion
 
                 window.alert("El anfitrion se desconecto, recargue la pagina por favor");
                 username.disabled = false;
                 submit.disabled = false;
             }
-            else if(data.data[data.data.length-1]=="s"){
-
+            else if(data.data[data.data.length-1]=="s"){    //Recibe un mensaje en formato [q, ,n,o,m,b,r,e, ,s] en respuesta a la letra enviada, en este caso la respuesta fue positiva
+                                                            //q puede ser cualquiera de las letras, en este caso hace referencia a la anteriormente enviada por el jugador 
                 for(i=0, j=1; i<palabra.length; i++, j=j+3){
 
-                    if((palabra+"")[i]==(data.data+"")[0]){
+                    if((palabra+"")[i]==(data.data+"")[0]){ //Remplaza los "_" por la letra recibida en el o los lugares indicados
 
                         if(j+1!=palabraO.length){
                             
@@ -272,7 +270,7 @@
                     }
                 }
                 palabraR.innerHTML = "Adivina la palabra: "+palabraO;
-                if (palabraO.indexOf("_")==-1){
+                if (palabraO.indexOf("_")==-1){     //Revisa si quedan "_" en la palabra a adivinar, si ya no quedan el jugador gano la partida y  se prepara para la siguiente
 
                     inicio = false;
                     window.alert("Felicidades, ganaste la partida");
@@ -281,10 +279,10 @@
                     vidas = 6;
                 }
             }
-            else if(data.data[data.data.length-1]=="n"){
+            else if(data.data[data.data.length-1]=="n"){    //Recibe un mensaje en formato [q, ,n,o,m,b,r,e, ,n] en respuesta a la letra enviada, en este caso la respuesta fue negativa
 
                 vidas--;
-                switch (vidas) {
+                switch (vidas) {    //Dependiendo de la cantidad de vidas actuales se colocara una imagen del hangman
 
                     case 5: hangmanI.src = "./src/public/images/hangman-1.jpg";
 
@@ -315,7 +313,7 @@
                         break;
                 }
                 vida.innerHTML = `Vidas restantes: ${vidas}`;
-                if (vidas == 0){
+                if (vidas == 0){    //Si las vidas llegan a 0 se le informa al servidor, se bloquean los botones y se prepara la siguiente partida
 
                     ws.send("4 "+user);
                     for (i=0; i<botones.length; i++) botones[i].disabled = true;
